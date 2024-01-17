@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 
-namespace Server
+namespace Server.Classes
 {
     public class UDP
     {

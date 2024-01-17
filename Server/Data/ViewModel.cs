@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Server.Classes;
 
-namespace Server
+namespace Server.Data
 {
     public class ViewModel : INotifyPropertyChanged
     {
@@ -29,15 +30,15 @@ namespace Server
         public BitmapImage StateImageSource { get => stateImageSource; set { stateImageSource = value; OnPropertyChanged(nameof(StateImageSource)); } }
         public string StateLabelContent { get => stateLabelContent; set { stateLabelContent = value; OnPropertyChanged(nameof(StateLabelContent)); } }
 
-        public ViewModel(ListBox listBox) 
+        public ViewModel(ListBox listBox)
         {
             itemListBox = listBox;
             using (DatabaseContext db = new DatabaseContext())
             {
-                if(db.Users != null)
+                if (db.Users != null)
                 {
                     itemListBox.ItemsSource = db.Users.ToList();
-                }                
+                }
             }
         }
 

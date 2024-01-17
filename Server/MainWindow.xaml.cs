@@ -1,5 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Server.Classes;
+using Server.Data;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -28,10 +30,19 @@ namespace Server
             token = cts.Token;
             StartListen();
 
-            using (DatabaseContext db = new DatabaseContext())
+            TryUpdateUsers();
+        }
+
+        void TryUpdateUsers()
+        {
+            try
             {
-                itemListBox.ItemsSource = db.Users.ToList();
+                using (DatabaseContext db = new DatabaseContext())
+                {
+                    itemListBox.ItemsSource = db.Users.ToList();
+                }
             }
+            catch(Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         async void StartListen()
@@ -47,7 +58,9 @@ namespace Server
                 {
                     token.ThrowIfCancellationRequested();
                     string received = await server.udp.ReceiveAsync();
-                    MessageBox.Show(received);
+                    //MessageBox.Show(received);
+
+                    if (received == "updateusers") Application.Current.Dispatcher.Invoke(TryUpdateUsers);
                 }
             }
             catch (OperationCanceledException) { }
@@ -85,7 +98,7 @@ namespace Server
                         var processes = user.GetForbiddenProcesses();
                         if (processes != null)
                         {
-                            viewModel.Processes = new ObservableCollection(processes);
+                            viewModel.Processes = new ObservableCollection<Process>(processes);
                             viewModel.EmptyProcessVisibility = Visibility.Hidden;
                         }
                         else
