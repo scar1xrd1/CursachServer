@@ -1,12 +1,9 @@
 ﻿using MahApps.Metro.Controls;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Server.Classes;
 using Server.Data;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -42,7 +39,7 @@ namespace Server
                     itemListBox.ItemsSource = db.Users.ToList();
                 }
             }
-            catch(Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         async void StartListen()
@@ -109,7 +106,7 @@ namespace Server
                                 viewModel.StateImageSource = new BitmapImage(new Uri("Images/emptyProcess.png", UriKind.Relative));
                                 viewModel.StateLabelContent = "Список запрещенных процессов пуст";
                             });
-                        }         
+                        }
                     }
                 }
             }

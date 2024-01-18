@@ -23,7 +23,7 @@
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                <ColumnDefinition Width="0.3*"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
@@ -46,7 +46,7 @@
                                             <Border x:Name="border" Background="#252525" CornerRadius="10" Margin="2">
                                                 <Grid Background="{TemplateBinding Background}">
                                                     <!--<mah:ProgressRing VerticalAlignment="Center" Width="25" Height="25" HorizontalAlignment="Center" Background="#0000" Foreground="{DynamicResource MahApps.Brushes.Accent2}" IsActive="True"/>-->
-                                                    <Label VerticalAlignment="Center" FontSize="12" HorizontalAlignment="Center" Content="{Binding Login}"/>
+                                                    <Label VerticalAlignment="Center" FontSize="12" HorizontalAlignment="Left" Margin="5 0 0 0" Content="{Binding Login}"/>
                                                 </Grid>
                                             </Border>
                                             <ControlTemplate.Triggers>
