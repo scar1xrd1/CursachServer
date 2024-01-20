@@ -37,7 +37,7 @@
 
             <Border Grid.Column="0" Background="#303030" Margin="10 10 10 10" CornerRadius="20">
                 <Grid>
-                    <ListBox Margin="5" Background="#0000" x:Name="itemListBox" SelectionChanged="Client_SelectionChanged">
+                    <ListBox Margin="5" Background="#0000" x:Name="itemListBox" ItemsSource="{Binding Users}" SelectionChanged="Client_SelectionChanged">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="Template">

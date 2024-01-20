@@ -15,16 +15,19 @@ namespace Server.Data
 {
     public class ViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<User>? Users { get; set; }
-        public ObservableCollection<Process>? Processes { get; set; }
+        
 
         ListBox itemListBox;
 
+        ObservableCollection<User>? users;
+        ObservableCollection<Process>? processes;
         bool isLoading = false;
         Visibility emptyProcessVisibility = Visibility.Visible;
         BitmapImage stateImageSource = new BitmapImage(new Uri("Images/emptyUser.png", UriKind.Relative));
         string stateLabelContent = "Пользователь не выбран";
 
+        public ObservableCollection<User>? Users { get => users; set { users = value; OnPropertyChanged(nameof(Users)); } }
+        public ObservableCollection<Process>? Processes { get => processes; set { processes = value; OnPropertyChanged(nameof(Processes)); } }
         public bool IsLoading { get => isLoading; set { isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
         public Visibility EmptyProcessVisibility { get => emptyProcessVisibility; set { emptyProcessVisibility = value; OnPropertyChanged(nameof(EmptyProcessVisibility)); } }
         public BitmapImage StateImageSource { get => stateImageSource; set { stateImageSource = value; OnPropertyChanged(nameof(StateImageSource)); } }

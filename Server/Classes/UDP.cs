@@ -13,11 +13,11 @@ namespace Server.Classes
 
         public UDP()
         {
-            Ip = IPAddress.Any.ToString();
+            Ip = "127.0.0.1";
             LocalPort = "55960";
             RemotePort = "55961";
 
-            udp = new UdpClient(new IPEndPoint(IPAddress.Any, 55961));
+            udp = new UdpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 55961));
         }
 
         public UDP(string ip, string localPort, string remotePort)

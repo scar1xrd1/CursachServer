@@ -28,6 +28,8 @@ namespace Server
             StartListen();
 
             TryUpdateUsers();
+
+            Task.Run(PeriodicUpdateInformation);
         }
 
         void TryUpdateUsers()
@@ -36,7 +38,7 @@ namespace Server
             {
                 using (DatabaseContext db = new DatabaseContext())
                 {
-                    itemListBox.ItemsSource = db.Users.ToList();
+                    viewModel.Users = new ObservableCollection<User>(db.Users.ToList());
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
@@ -81,6 +83,24 @@ namespace Server
 
                 viewModel.IsLoading = false;
             }
+        }
+
+        async Task PeriodicUpdateInformation()
+        {
+            while(true)
+            {
+                await Task.Delay(1000);
+
+                try
+                {
+                    using (DatabaseContext db = new DatabaseContext())
+                    {
+                        var users = db.Users.ToList();
+
+                    }
+                }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
+            }            
         }
 
         async Task TryLoadUserInfo(string login)
