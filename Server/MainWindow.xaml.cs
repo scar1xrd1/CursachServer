@@ -36,6 +36,7 @@ namespace Server
         {
             try
             {
+                //MessageBox.Show("try");
                 using (DatabaseContext db = new DatabaseContext())
                 {
                     viewModel.Users = new ObservableCollection<User>(db.Users.ToList());

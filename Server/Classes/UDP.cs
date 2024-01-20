@@ -10,6 +10,7 @@ namespace Server.Classes
         public string LocalPort { get; set; }
         public string RemotePort { get; set; }
         private UdpClient udp;
+        private IPEndPoint? remoteEP;
 
         public UDP()
         {
@@ -17,7 +18,7 @@ namespace Server.Classes
             LocalPort = "55960";
             RemotePort = "55961";
 
-            udp = new UdpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 55961));
+            udp = new UdpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 55960));
         }
 
         public UDP(string ip, string localPort, string remotePort)
@@ -25,8 +26,7 @@ namespace Server.Classes
             Ip = ip;
             LocalPort = localPort;
             RemotePort = remotePort;
-
-            udp = new UdpClient(new IPEndPoint(IPAddress.Parse(Ip), int.Parse(RemotePort)));
+            udp = new UdpClient(new IPEndPoint(IPAddress.Parse(Ip), int.Parse(LocalPort)));
         }
 
         public void SetPoint(string ip, string localPort, string remotePort)
@@ -34,6 +34,7 @@ namespace Server.Classes
             Ip = ip;
             LocalPort = localPort;
             RemotePort = remotePort;
+            udp = new UdpClient(new IPEndPoint(IPAddress.Parse(Ip), int.Parse(LocalPort)));
         }
 
         public async Task<string> ReceiveAsync()
@@ -53,7 +54,8 @@ namespace Server.Classes
             string feedback = "Данные успешно отправлены.";
             try
             {
-                await udp.SendAsync(Encoding.UTF8.GetBytes(data));
+                remoteEP = new IPEndPoint(IPAddress.Parse(Ip), int.Parse(RemotePort));
+                await udp.SendAsync(Encoding.UTF8.GetBytes(data), remoteEP);
             }
             catch (Exception e) { feedback = $"Ошибка отправки данных: {e.Message}"; }
             return feedback;

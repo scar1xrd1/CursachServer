@@ -15,12 +15,10 @@ namespace Server.Data
 {
     public class ViewModel : INotifyPropertyChanged
     {
-        
-
         ListBox itemListBox;
 
-        ObservableCollection<User>? users;
-        ObservableCollection<Process>? processes;
+        ObservableCollection<User>? users = new ObservableCollection<User>();
+        ObservableCollection<Process>? processes = new ObservableCollection<Process>();
         bool isLoading = false;
         Visibility emptyProcessVisibility = Visibility.Visible;
         BitmapImage stateImageSource = new BitmapImage(new Uri("Images/emptyUser.png", UriKind.Relative));
@@ -36,13 +34,6 @@ namespace Server.Data
         public ViewModel(ListBox listBox)
         {
             itemListBox = listBox;
-            using (DatabaseContext db = new DatabaseContext())
-            {
-                if (db.Users != null)
-                {
-                    itemListBox.ItemsSource = db.Users.ToList();
-                }
-            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
