@@ -27,7 +27,6 @@ namespace Server
             viewModel = new ViewModel(itemListBox);
             DataContext = viewModel;
             token = cts.Token;
-            StartListen();
 
             TryUpdateUsers();
 
@@ -35,6 +34,7 @@ namespace Server
 
             Task.Run(PeriodicUpdateInformation);
             Task.Run(PeriodicUpdateProcesses);
+            Task.Run(StartListenAsync);
         }
 
         void TryUpdateUsers()
@@ -48,11 +48,6 @@ namespace Server
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
-        }
-
-        async void StartListen()
-        {
-            await Task.Run(StartListenAsync);
         }
 
         async Task StartListenAsync()
