@@ -23,15 +23,15 @@ namespace Server.Classes
             PasswordSalt = passwordSalt;
         }
 
-        public List<Process>? GetForbiddenProcesses()
+        public List<MyProcess>? GetForbiddenProcesses()
         {
-            try { return JsonSerializer.Deserialize<List<Process>>(ForbiddenProcesses); }
+            try { return JsonSerializer.Deserialize<List<MyProcess>>(ForbiddenProcesses); }
             catch { return null; }
         }
 
-        public List<Process>? GetAllProcesses()
+        public List<MyProcess>? GetAllProcesses()
         {
-            try { return JsonSerializer.Deserialize<List<Process>>(AllProcesses); }
+            try { return JsonSerializer.Deserialize<List<MyProcess>>(AllProcesses); }
             catch { return null; }
         }
     }

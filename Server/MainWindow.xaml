@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="SERVER" Height="450" Width="800" Background="#202020" Closing="Window_Closing"
+        Title="SERVER" Height="550" Width="900" Background="#202020" Closing="Window_Closing"
         TitleForeground="#505050" ShowTitleBar="False" BorderThickness="0" GlowBrush="Black"
         WindowTransitionsEnabled="False"
         WindowStartupLocation="CenterScreen">
@@ -17,6 +17,44 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Green.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="Button">
+                <Setter Property="Background" Value="#404040"></Setter>
+                <Setter Property="Foreground" Value="#e3e3e3"></Setter>
+                <Setter Property="FontWeight" Value="Medium"></Setter>
+                <Setter Property="FontSize" Value="15"></Setter>
+                <Setter Property="BorderThickness" Value="0"></Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="20">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#505050"></Setter>
+                    </Trigger>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard SpeedRatio="2">
+                                    <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" To="#808080" Duration="0:0:0.1" AutoReverse="True"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="TextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="BorderThickness" Value="0"></Setter>
+                <Setter Property="Margin" Value="7"></Setter>
+                <Setter Property="Background" Value="#0000"></Setter>
+                <Setter Property="FontSize" Value="20"></Setter>
+            </Style>
         </ResourceDictionary>
     </mah:MetroWindow.Resources>
 
@@ -63,15 +101,84 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Column="1" Background="#303030" Margin="10 40 10 10" CornerRadius="20">
-                <Grid>
-                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding EmptyProcessVisibility}">
-                        <Image Width="100" Height="100" Source="{Binding StateImageSource}"></Image>
-                        <Label Margin="0" FontWeight="Bold" FontSize="20" Content="{Binding StateLabelContent}"></Label>
-                    </StackPanel>
-                    <mah:ProgressRing VerticalAlignment="Center" HorizontalAlignment="Center" Width="100" Foreground="{DynamicResource MahApps.Brushes.Accent2}" IsActive="{Binding IsLoading}"/>
-                </Grid>
-            </Border>
+            <Grid Grid.Column="1" Visibility="{Binding ProcessVisibility}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label HorizontalAlignment="Center" Margin="7" FontSize="18" FontWeight="Bold">Запрещенные процессы</Label>
+                <Border Grid.Column="0" Background="#303030" Margin="10 40 10 10" CornerRadius="20">
+                    <Grid>                        
+                        <ListBox Margin="5" Background="#0000" ItemsSource="{Binding ForbiddenProcesses}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <EventSetter Event="MouseDoubleClick" Handler="ForbiddenProcessItem_MouseDoubleClick"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border x:Name="border" Background="#252525" CornerRadius="10" Margin="2">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <!--<mah:ProgressRing VerticalAlignment="Center" Width="25" Height="25" HorizontalAlignment="Center" Background="#0000" Foreground="{DynamicResource MahApps.Brushes.Accent2}" IsActive="True"/>-->
+                                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <Label  FontSize="12"  Margin="5 0 0 0" Content="{Binding ProcessName}"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="border" Property="Background" Value="#454545"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>                    
+                </Border>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding EmptyProcessVisibility}">
+                    <Image Width="75" Height="75" Source="{Binding StateImageSource}"></Image>
+                    <Label Margin="0" FontWeight="Bold" FontSize="14" Content="{Binding StateLabelContent}"></Label>
+                </StackPanel>
+
+                <Label Grid.Column="1" HorizontalAlignment="Left" Margin="30 10 0 0" FontSize="14" FontWeight="Bold">Активные процессы</Label>
+                <Border Grid.Column="1" Background="#303030" Margin="10 40 10 60" CornerRadius="20">
+                    <Grid>
+                        <ListBox Margin="5" Background="#0000" ItemsSource="{Binding Processes}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <EventSetter Event="MouseDoubleClick" Handler="ProcessItem_MouseDoubleClick"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border x:Name="border" Background="#252525" CornerRadius="10" Margin="2">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <!--<mah:ProgressRing VerticalAlignment="Center" Width="25" Height="25" HorizontalAlignment="Center" Background="#0000" Foreground="{DynamicResource MahApps.Brushes.Accent2}" IsActive="True"/>-->
+                                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <Label  FontSize="12"  Margin="5 0 0 0" Content="{Binding ProcessName}"/>
+                                                            <Label  FontSize="12"  Margin="5 0 0 0" Content="{Binding ProcessId}"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="border" Property="Background" Value="#454545"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>                    
+                </Border>
+                <Button Grid.Column="1" Margin="10 10 10 10" VerticalAlignment="Bottom" Click="Unhide_Click" Height="40">Убрать скрытый режим</Button>
+            </Grid>
+            
+            <mah:ProgressRing Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100" Foreground="{DynamicResource MahApps.Brushes.Accent2}" IsActive="{Binding IsLoading}"/>
         </Grid>
     </Grid>    
 </mah:MetroWindow>
