@@ -101,6 +101,11 @@
                 </Grid>
             </Border>
 
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding StateUserVisibility}">
+                <Image Width="150" Height="150" Source="{Binding StateUserImageSource}"></Image>
+                <Label Margin="0" FontWeight="Bold" FontSize="24" Content="{Binding StateUserLabelContent}"></Label>
+            </StackPanel>
+
             <Grid Grid.Column="1" Visibility="{Binding ProcessVisibility}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>

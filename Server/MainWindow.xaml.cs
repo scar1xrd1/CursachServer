@@ -84,6 +84,7 @@ namespace Server
                 viewModel.IsLoading = true;
                 viewModel.EmptyProcessVisibility = Visibility.Hidden;
                 viewModel.ProcessVisibility = Visibility.Hidden;
+                viewModel.StateUserVisibility = Visibility.Hidden;
                 viewModel.ForbiddenProcesses.Clear();
                 viewModel.Processes.Clear();
                 string login = ((User)itemListBox.SelectedItem).Login;
@@ -117,6 +118,7 @@ namespace Server
                                     viewModel.Users.Remove(user);
                                     viewModel.ForbiddenProcesses.Clear();
                                     viewModel.Processes.Clear();
+                                    viewModel.StateUserVisibility = Visibility.Visible;
                                 }
                             }                                
                         });
